@@ -1,7 +1,6 @@
 const fs = require('fs')
 const chalk = require('chalk')
 
-const getNotes=()=>"Your notes..."
 
 const addNote=(title,body)=>{
 
@@ -44,6 +43,19 @@ const listNotes=()=>{
     })
 }
 
+const readNote=(title)=>{
+    const notes=loadNotes()
+    const found=notes.find((note)=>note.title===title)
+
+    if(found){
+        console.log('title:' + chalk.blue(found.title))
+        console.log('body:'+found.body)
+    }else{
+        console.log(chalk.red.inverse('Note not found'))
+    }
+
+}
+
 const loadNotes=()=>{
     try{
         const dataBuffer=fs.readFileSync('notes.json')
@@ -62,4 +74,4 @@ const saveNotes = (notes)=>{
 }
 
 
-module.exports ={getNotes,addNote,removeNote,listNotes}
+module.exports ={addNote,removeNote,listNotes,readNote}
