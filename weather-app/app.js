@@ -5,12 +5,11 @@ const openWeather=require('./utils/openWeather.js')
 
 
 if(process.argv[2])
-openWeather(process.argv[2],(err,data)=>{
-    // Thought of destructuring data but in case of 
-    // err it will give undefined so might find work around that
+openWeather(process.argv[2],(err,{name='No city',forecast='No forecast'}={})=>{
+//default parameter
 if(err)return console.log(err)
-console.log(data.name)
-console.log(data.forecast)
+console.log(name)
+console.log(forecast)
 
 
 })
