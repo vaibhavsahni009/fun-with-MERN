@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const hbs =require('hbs')
+const openWeather=require('./utils/openWeather')
 
 const app=express()
 const publicDirPath=path.join(__dirname,'../public')
@@ -40,10 +41,25 @@ app.get('/help',(req, res)=>{
 
 
 app.get('/weather',(req,res)=>{
+    if(!req.query.city){
+        return res.send({
+            error:'You must provide an address'
+        })
+    }
+
+    openWeather(req.query.city,(err,{city='No city',forecast='No forecast'}={})=>{
+        //using default for empty data
+    if(err)return res.send({error: err})
+    // console.log(data.name)
+    // console.log(data.forecast)
+    
     res.send({
-        forecast:'something',
-        name:'delhi'
+        address:req.query.city,
+        forecast,
+        city
     })
+    })
+
 
 })
 
