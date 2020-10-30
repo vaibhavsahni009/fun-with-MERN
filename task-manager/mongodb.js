@@ -16,58 +16,34 @@ MongoClient.connect(connectionURL,{useNewUrlParser:true,useUnifiedTopology:true}
     const db=client.db(databaseName)
 
 
-    // db.collection('users').insertMany([{
-    //     name:'Vaibhav',
-    //     age:20
-    // },{
-    //     name:'Dhruv',
-    //     age:20
-    // }],(error,result)=>{
-
-    //     if(error){
-    //         return console.log('unable to insert document');
+    // db.collection('users').updateOne({_id:new ObjectID("5f91997b0c21606aca1ef498")},
+    // {
+    //     $set:{
+    //         age:20
+           
+            
     //     }
-    //     console.log(result.ops);
-
+    // }).then((result)=>{
+    //     console.log(result)
+    // }).catch((e)=>{
+    //     console.log(e)
     // })
 
-//     db.collection('tasks').insertMany([{
-//         description:'first task',
-//         completed: true
-//     },{
-//         description:'second task',
-//         completed: false
-//     },{
-//         description:'third task',
-//         completed: false
-//     }
-// ],(error,result)=>{
+    // db.collection('tasks').updateMany({completed:false},
+    // {
+    //     $set:{
+    //         completed:true
+           
+            
+    //     }
+    // }).then((result)=>{
+    //     console.log(result)
+    // }).catch((e)=>{
+    //     console.log(e)
+    // })
 
-//         if(error){
-//             return console.log('unable to insert document');
-//         }
-//         console.log(result.ops);
 
-//     })
-
-db.collection('tasks').findOne({_id:new ObjectID('5f92de4cd5b1dcaef41753c5')},(error,task)=>{
-
-    if(error){
-        return console.log('Unable to fetch')
-    }
-
-    console.log(task)
-
-})
-
-db.collection('tasks').find({completed:false}).toArray((error,task)=>{
-    
-    if(error){
-        return console.log('Unable to fetch')
-    }
-    
-    console.log(task)
-
-})
-
+    db.collection('tasks').deleteOne({
+        description:"second task"
+    }).then((result)=>console.log(result)).catch((e)=>{console.log(e)})
 })
