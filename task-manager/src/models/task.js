@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 // const validator = require('validator')
 
-const Task =mongoose.model('Task',{
+const taskSchema= new mongoose.Schema({
     completed:{
         type:Boolean,
         default:false
@@ -13,5 +13,15 @@ const Task =mongoose.model('Task',{
         required:true,
 }
 })
+
+taskSchema.pre('save',async function(next){
+
+    console.log('before saving')
+
+    next()
+
+})
+
+const Task =mongoose.model('Task',taskSchema)
 
 module.exports=Task
