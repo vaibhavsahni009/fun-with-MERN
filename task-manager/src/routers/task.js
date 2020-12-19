@@ -67,7 +67,7 @@ router.patch('/tasks/:id', async (req, res) => {
 
     if (!isValidOperation) {
         return res.status(400).send({
-            'errror': 'Invalid Updates!'
+            'error': 'Invalid Updates!'
         })
     }
 
