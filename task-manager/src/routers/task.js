@@ -4,9 +4,16 @@ const auth = require("../middleware/auth");
 const router = new express.Router();
 
 router.get("/tasks", auth, async (req, res) => {
+  const match = {};
+
+  if (req.query.completed) {
+    match.completed = req.query.completed === "true";
+  }
+
   try {
     const tasks = await Task.find({
       owner: req.user._id,
+      ...match,
     });
     res.send(tasks);
   } catch (error) {
