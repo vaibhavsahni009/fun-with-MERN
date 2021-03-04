@@ -65,7 +65,7 @@ router.get("/users/me", auth, async (req, res) => {
   //     res.status(500).send(error)
   // }
 
-  res.send(req.user);
+  res.status(200).send(req.user);
 });
 
 router.get("/users/:id", async (req, res) => {
