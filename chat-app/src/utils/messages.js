@@ -1,8 +1,10 @@
-const generateMessage=(text)=>({text,
+const generateMessageTime=(text)=>({text,
 createdAt:new Date().getTime()})
 
+const generateLocationTime=(text)=>({text,
+    createdAt:new Date().getTime()})
+    
 
-
-module.exports = {generateMessage}
+module.exports = {generateMessageTime,generateLocationTime}
 
 
