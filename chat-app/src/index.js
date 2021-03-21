@@ -18,16 +18,20 @@ app.use(express.static(publicDirPath));
 // let count = 0;
 
 io.on("connection", (socket) => {
-  console.log("new webSocket connection");
 
-  socket.emit("message", generateMessageTime("welcome"));
-  socket.broadcast.emit("message", generateMessageTime("A new user has joined"));
-  // socket.emit("countUpdated", count);
-  // socket.on("increment", () => {
-  //   count++;
-  //   // socket.emit('countUpdated',count)
-  //   io.emit("countUpdated", count);
-  // });
+ 
+
+  socket.on('join',({username,room})=>{
+
+    console.log("new webSocket connection");
+
+    socket.emit("message", generateMessageTime("welcome"));
+    socket.broadcast.to(room).emit("message", generateMessageTime(`${username} has joined`));
+   
+    socket.join(room)
+
+  })
+
 
   socket.on("sendMessage", (message, callback) => {
 

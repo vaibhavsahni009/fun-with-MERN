@@ -1,33 +1,27 @@
 const socket = io();
 
-// socket.on("countUpdated", (count) => {
-//   console.log("count updated", count);
-// });
-
-// document.querySelector("#increment").addEventListener("click", () => {
-//   console.log("clicked");
-//   socket.emit('increment')
-// });
-
-// socket.on("newUser", (message) => {
-//   console.log(message);
-// });
-
+//Elements
 const $messageForm = document.querySelector("#message-form");
 const $messageFormButton = $messageForm.querySelector("button");
 const $messageFormInput = $messageForm.querySelector("input");
 const $sendLocationButton = document.querySelector("#send-location");
 const $messages = document.querySelector("#messages");
 
+//Templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+
+//Options
+const { username, room } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+});
 
 socket.on("message", (message) => {
   console.log(message);
 
-  const html = Mustache.render(messageTemplate,{
-    message:message.text,
-    createdAt:moment(message.createdAt).format('h:mm a') 
+  const html = Mustache.render(messageTemplate, {
+    message: message.text,
+    createdAt: moment(message.createdAt).format("h:mm a"),
   });
 
   $messages.insertAdjacentHTML("beforeend", html);
@@ -51,13 +45,12 @@ $messageForm.addEventListener("submit", (e) => {
   });
 });
 
-
 socket.on("locationMessage", (url) => {
   console.log(url);
 
-  const html = Mustache.render(locationTemplate,{
-    url:url.text,
-    createdAt:moment(url.createdAt).format('h:mm a')
+  const html = Mustache.render(locationTemplate, {
+    url: url.text,
+    createdAt: moment(url.createdAt).format("h:mm a"),
   });
 
   $messages.insertAdjacentHTML("beforeend", html);
@@ -86,3 +79,6 @@ $sendLocationButton.addEventListener("click", () => {
     });
   });
 });
+
+
+socket.emit('join',{username,room})
