@@ -21,12 +21,20 @@ if(existingUser){
     }
 }
 
+
 const user={id,username,room}
 users.push(user)
 return {user}
 
 }
 
+const removeUser=(id)=>{
+    const index=users.findIndex((user)=>user.id===id)
+
+    if(index!==-1){
+        return users.splice(index,1)[0]
+    }
+}
 
 addUsers({
     id:22,
@@ -37,11 +45,15 @@ addUsers({
 
 console.log(users)
 
-const res=addUsers({
-    id:33,
-    username:'vaibhav',
-    room:'New delhi'
-})
+console.log(removeUser(22))
 
-console.log(res)
+console.log(users)
+
+// const res=addUsers({
+//     id:33,
+//     username:'vaibhav',
+//     room:'New delhi'
+// })
+
+// console.log(res)
 
