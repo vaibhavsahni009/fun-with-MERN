@@ -28,6 +28,24 @@ return {user}
 
 }
 
+const getUser=(id)=>{
+    const existingUser=users.find((user)=>{
+        return id===user.id
+})
+if(existingUser)return existingUser
+return undefined
+
+}
+
+const getUsersInRoom=(room)=>{
+
+const usersInRoom=users.filter((user)=>user.room===room)
+
+if(usersInRoom)return usersInRoom
+return []
+
+}
+
 const removeUser=(id)=>{
     const index=users.findIndex((user)=>user.id===id)
 
@@ -43,11 +61,33 @@ addUsers({
 
 })
 
+addUsers({
+    id:32,
+    username:'Mike ',
+    room:' New Delhi '
+
+})
+
+addUsers({
+    id:42,
+    username:'Vaibhav ',
+    room:'Mumbai '
+
+})
+
+
+
 console.log(users)
 
-console.log(removeUser(22))
+console.log(getUser(22))
+console.log(getUser(52))
 
-console.log(users)
+console.log(getUsersInRoom('new delhi'))
+console.log(getUsersInRoom('kolkata'))
+
+// console.log(removeUser(22))
+
+// console.log(users)
 
 // const res=addUsers({
 //     id:33,
