@@ -4,6 +4,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const Filter=require('bad-words')
 const {generateMessageTime,generateLocationTime}=require('./utils/messages')
+const {addUsers,removeUser,getUser,getUsersInRoom}=require('./utils/user')
 
 const app = express();
 const server = http.createServer(app);
@@ -21,19 +22,30 @@ io.on("connection", (socket) => {
 
  
 
-  socket.on('join',({username,room})=>{
+  socket.on('join',({username,room},callback)=>{
+
+
+    const {error,user}=addUsers({id:socket.id,username,room})
+
+    if(error){
+      return callback(error)
+    }
 
     console.log("new webSocket connection");
 
-    socket.emit("message", generateMessageTime("welcome"));
-    socket.broadcast.to(room).emit("message", generateMessageTime(`${username} has joined`));
+    socket.emit("message", generateMessageTime("Admin","welcome"));
+    socket.broadcast.to(user.room).emit("message", generateMessageTime("Admin",`${user.username} has joined`));
    
-    socket.join(room)
+    socket.join(user.room)
+
+    callback()
 
   })
 
 
   socket.on("sendMessage", (message, callback) => {
+
+    const user=getUser(socket.id)
 
     const filter=new Filter()
 
@@ -41,20 +53,27 @@ io.on("connection", (socket) => {
       return callback('Profanity not allowed')
     }
 
-    io.emit("message", generateMessageTime(message));
+    io.to(user.room).emit("message", generateMessageTime(user.username,message));
     callback();
   });
 
   socket.on("sendLocation", (data,callback) => {
-    io.emit(
+    
+    const user=getUser(socket.id)
+    
+    io.to(user.room).emit(
       "locationMessage",
-      generateLocationTime(`https://google.com/maps?q=${data.latitude},${data.longitude}`)
+      generateLocationTime(user.username,`https://google.com/maps?q=${data.latitude},${data.longitude}`)
     );
       callback();
   });
 
   socket.on("disconnect", () => {
-    io.emit("message", generateMessageTime("A user disconnected"));
+
+    const user=removeUser(socket.id)
+
+    if(user){
+    io.to(user.room).emit("message", generateMessageTime("Admin",`${user.username} disconnected`));}
   });
 });
 

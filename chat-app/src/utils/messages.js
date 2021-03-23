@@ -1,7 +1,7 @@
-const generateMessageTime=(text)=>({text,
+const generateMessageTime=(username,text)=>({username,text,
 createdAt:new Date().getTime()})
 
-const generateLocationTime=(text)=>({text,
+const generateLocationTime=(username,text)=>({username,text,
     createdAt:new Date().getTime()})
     
 
