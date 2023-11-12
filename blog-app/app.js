@@ -12,6 +12,7 @@ app.set('views', path.join(process.cwd(), 'views')); // Set views directory
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // Enable JSON parsing for API requests
+let postIdCounter = 1; // Initialize the counter
 
 // Sample data (replace with a database in a real-world scenario)
 let posts = [
@@ -45,7 +46,7 @@ app.post('/edit/:id', (req, res) => {
 
 app.post('/create', (req, res) => {
   const newPost = {
-    id: posts.length + 1,
+    id: postIdCounter++, // Use the current counter value and then increment
     title: req.body.title,
     content: req.body.content
   };
